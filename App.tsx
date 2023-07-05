@@ -1,20 +1,26 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+//Packages
+import { Center, NativeBaseProvider, StatusBar, Text } from 'native-base'
+import { useFonts } from 'expo-font'
 
-export default function App() {
+//Pages
+import { theme } from './src/assets/styles/theme'
+import { Loading } from './src/components/Loading'
+import { SignIn } from './src/screens/SignIn'
+
+export default function App () {
+  const [fontsLoaded] = useFonts({
+    Anton: require('./src/assets/fonts/Anton-Regular.ttf'),
+    Monomaniac: require('./src/assets/fonts/MonomaniacOne-Regular.ttf')
+  })
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
+    <NativeBaseProvider theme={theme}>
+      <StatusBar 
+      barStyle='light-content'
+      backgroundColor='transparent'
+      translucent
+       />
+      {!fontsLoaded ? <Loading /> : <SignIn />}
+    </NativeBaseProvider>
+  )
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});

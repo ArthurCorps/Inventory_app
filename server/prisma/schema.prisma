@@ -1,0 +1,144 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+generator erd {
+  provider = "prisma-erd-generator"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+// Tabelas
+
+// Table usuário
+model User {
+  id String @id @default(cuid())
+
+  name      String
+  email     String   @unique
+  createdAt DateTime @default(now())
+
+  User_car User_car[]
+
+  @@map("user")
+}
+
+// Table Montadora
+// Ex: Honda, Mitsubishi, Mercedes, Ferrari, etc
+model Manufacturer {
+  id      Int     @id @default(autoincrement())
+  name    String
+  country String?
+  flag    String?
+  photo   String?
+
+  Car Car[]
+
+  @@map("manufacturer")
+}
+
+// Table Anos
+// Ex: 1999, 2000, 2001, etc
+model Year {
+  id    Int  @id @default(autoincrement())
+  year  Int
+  total Int?
+
+  Car Car[]
+
+  @@map("year")
+}
+
+// Table Cores
+// Ex: Red, Green, Blue, etc
+model Colors {
+  id   Int    @id @default(autoincrement())
+  name String
+  hex  String
+
+  Car Car[]
+
+  @@map("colors")
+}
+
+// Table TH
+// Ex: T - Treasure Hunt, S - Super Treasure Hunt, etc
+model TreasureHunt {
+  id     Int    @id @default(autoincrement())
+  letter String
+  name   String
+  Car    Car[]
+
+  @@map("treasureHunt")
+}
+
+// Table Companhia
+// Ex: Hot Wheels, Matchbox, etc
+model Company {
+  id    Int     @id @default(autoincrement())
+  name  String
+  photo String?
+  Car   Car[]
+
+  @@map("company")
+}
+
+// Table Exclusive
+// Ex: Kroger, Kmart, Walmart, etc
+model Exclusive {
+  id     Int     @id @default(autoincrement())
+  letter String
+  name   String
+  photo  String?
+
+  Car Car[]
+
+  @@map("exclusive")
+}
+
+model Car {
+  id              Int     @id @default(autoincrement())
+  manufactureId   Int
+  code            String?
+  yearId          Int
+  year_number     Int?
+  colorId         Int
+  color_wikia     String?
+  rubber          Boolean @default(false)
+  custom          Boolean @default(false)
+  treasure_huntId Int
+  new_model       Boolean @default(false)
+  companyId       Int     @default(0)
+  exclusiveId     Int     @default(0)
+  type            String? @default("M")
+  loose           Boolean @default(false)
+  price_buy       Float?
+  price_sell      Float?
+  sell            Boolean @default(false)
+
+  User_car User_car[]
+
+  manufacture  Manufacturer @relation(fields: [manufactureId], references: [id])
+  color        Colors       @relation(fields: [colorId], references: [id])
+  year         Year         @relation(fields: [yearId], references: [id])
+  treasureHunt TreasureHunt @relation(fields: [treasure_huntId], references: [id])
+  company      Company      @relation(fields: [companyId], references: [id])
+  exclusive    Exclusive    @relation(fields: [exclusiveId], references: [id])
+
+  @@map("car")
+}
+
+model User_car {
+  id     Int    @id @default(autoincrement())
+  userId String
+  carId  Int
+
+  user_id User @relation(fields: [userId], references: [id])
+  car_id  Car  @relation(fields: [carId], references: [id])
+}

@@ -103,24 +103,24 @@ model Exclusive {
 }
 
 model Car {
-  id              Int     @id @default(autoincrement())
-  manufactureId   Int
-  code            String?
-  yearId          Int
-  year_number     Int?
-  colorId         Int
-  color_wikia     String?
-  rubber          Boolean @default(false)
-  custom          Boolean @default(false)
-  treasure_huntId Int
-  new_model       Boolean @default(false)
-  companyId       Int     @default(0)
-  exclusiveId     Int     @default(0)
-  type            String? @default("M")
-  loose           Boolean @default(false)
-  price_buy       Float?
-  price_sell      Float?
-  sell            Boolean @default(false)
+  id                Int     @id @default(autoincrement())
+  manufactureId     Int
+  code              String?
+  yearId            Int
+  year_number       Int?
+  colorId           Int
+  color_wikia       String?
+  rubber            Boolean @default(false)
+  custom            Boolean @default(false)
+  treasure_huntId   Int
+  new_model         Boolean @default(false)
+  companyId         Int     @default(0)
+  exclusiveId       Int     @default(0)
+  type              String? @default("M")
+  loose             Boolean @default(false)
+  priceInCents_buy  Int?
+  priceInCents_sell Int?
+  sell              Boolean @default(false)
 
   User_car User_car[]
 
